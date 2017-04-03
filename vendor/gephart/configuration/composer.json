@@ -1,0 +1,23 @@
+{
+  "name": "gephart/configuration",
+  "type": "library",
+  "description": "Gephart Configuration Component",
+  "keywords": [],
+  "homepage": "https://github.com/gephart/configuration",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Michal Katuščák",
+      "email": "michal@katuscak.cz"
+    }
+  ],
+  "require": {
+    "php": ">=7.0"
+  },
+  "autoload": {
+    "psr-4": { "Gephart\\Configuration\\": "src/" },
+    "exclude-from-classmap": [
+      "/Tests/"
+    ]
+  }
+}

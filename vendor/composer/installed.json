@@ -1,0 +1,222 @@
+[
+    {
+        "name": "gephart/configuration",
+        "version": "0.2",
+        "version_normalized": "0.2.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/gephart/configuration.git",
+            "reference": "13661ce6daefdd722fb2adc8721e690487f1d2c8"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/gephart/configuration/zipball/13661ce6daefdd722fb2adc8721e690487f1d2c8",
+            "reference": "13661ce6daefdd722fb2adc8721e690487f1d2c8",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=7.0"
+        },
+        "time": "2017-03-09T18:53:42+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Gephart\\Configuration\\": "src/"
+            },
+            "exclude-from-classmap": [
+                "/Tests/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Michal Katuščák",
+                "email": "michal@katuscak.cz"
+            }
+        ],
+        "description": "Gephart Configuration Component",
+        "homepage": "https://github.com/gephart/configuration"
+    },
+    {
+        "name": "psr/container",
+        "version": "1.0.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/php-fig/container.git",
+            "reference": "b7ce3b176482dbbc1245ebf52b181af44c2cf55f"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/php-fig/container/zipball/b7ce3b176482dbbc1245ebf52b181af44c2cf55f",
+            "reference": "b7ce3b176482dbbc1245ebf52b181af44c2cf55f",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "time": "2017-02-14T16:28:37+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.0.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Psr\\Container\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "PHP-FIG",
+                "homepage": "http://www.php-fig.org/"
+            }
+        ],
+        "description": "Common Container Interface (PHP FIG PSR-11)",
+        "homepage": "https://github.com/php-fig/container",
+        "keywords": [
+            "PSR-11",
+            "container",
+            "container-interface",
+            "container-interop",
+            "psr"
+        ]
+    },
+    {
+        "name": "gephart/dependency-injection",
+        "version": "0.2.1",
+        "version_normalized": "0.2.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/gephart/dependency-injection.git",
+            "reference": "c3e548640dd1e78374f33abed47ed43892807e07"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/gephart/dependency-injection/zipball/c3e548640dd1e78374f33abed47ed43892807e07",
+            "reference": "c3e548640dd1e78374f33abed47ed43892807e07",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=7.0",
+            "psr/container": "1.0.0"
+        },
+        "time": "2017-03-19T17:46:46+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Gephart\\DependencyInjection\\": "src/"
+            },
+            "exclude-from-classmap": [
+                "/Tests/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Michal Katuščák",
+                "email": "michal@katuscak.cz"
+            }
+        ],
+        "description": "Gephart DependencyInjection Component",
+        "homepage": "https://github.com/gephart/dependency-injection"
+    },
+    {
+        "name": "gephart/event-manager",
+        "version": "0.2.3",
+        "version_normalized": "0.2.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/gephart/event-manager.git",
+            "reference": "dbf831248337b76c601714b2818460686e394135"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/gephart/event-manager/zipball/dbf831248337b76c601714b2818460686e394135",
+            "reference": "dbf831248337b76c601714b2818460686e394135",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=7.0"
+        },
+        "time": "2017-03-26T16:11:51+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Gephart\\EventManager\\": "src/"
+            },
+            "exclude-from-classmap": [
+                "/Tests/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Michal Katuščák",
+                "email": "michal@katuscak.cz"
+            }
+        ],
+        "description": "Gephart Event Manager Component",
+        "homepage": "https://github.com/gephart/event-manager"
+    },
+    {
+        "name": "gephart/annotation",
+        "version": "0.2.4",
+        "version_normalized": "0.2.4.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/gephart/annotation.git",
+            "reference": "263ccc56950815ddeead70ae5faea6f29729d362"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/gephart/annotation/zipball/263ccc56950815ddeead70ae5faea6f29729d362",
+            "reference": "263ccc56950815ddeead70ae5faea6f29729d362",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=7.0"
+        },
+        "time": "2017-03-27T19:52:16+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Gephart\\Annotation\\": "src/"
+            },
+            "exclude-from-classmap": [
+                "/Tests/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Michal Katuščák",
+                "email": "michal@katuscak.cz"
+            }
+        ],
+        "description": "Gephart Annotation Component",
+        "homepage": "https://github.com/gephart/annotation"
+    }
+]

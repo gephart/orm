@@ -1,0 +1,23 @@
+{
+  "name": "gephart/event-manager",
+  "type": "library",
+  "description": "Gephart Event Manager Component",
+  "keywords": [],
+  "homepage": "https://github.com/gephart/event-manager",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Michal Katuščák",
+      "email": "michal@katuscak.cz"
+    }
+  ],
+  "require": {
+    "php": ">=7.0"
+  },
+  "autoload": {
+    "psr-4": { "Gephart\\EventManager\\": "src/" },
+    "exclude-from-classmap": [
+      "/Tests/"
+    ]
+  }
+}

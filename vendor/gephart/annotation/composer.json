@@ -1,0 +1,23 @@
+{
+  "name": "gephart/annotation",
+  "type": "library",
+  "description": "Gephart Annotation Component",
+  "keywords": [],
+  "homepage": "https://github.com/gephart/annotation",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Michal Katuščák",
+      "email": "michal@katuscak.cz"
+    }
+  ],
+  "require": {
+    "php": ">=7.0"
+  },
+  "autoload": {
+    "psr-4": { "Gephart\\Annotation\\": "src/" },
+    "exclude-from-classmap": [
+      "/Tests/"
+    ]
+  }
+}
