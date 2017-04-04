@@ -14,16 +14,10 @@ class Executor
      */
     private $entity_analysator;
 
-    /**
-     * @var SQLBuilder
-     */
-    private $sql_builder;
-
-    public function __construct(Connector $connector, EntityAnalysator $entity_analysator, SQLBuilder $sql_builder)
+    public function __construct(Connector $connector, EntityAnalysator $entity_analysator)
     {
         $this->connector = $connector;
         $this->entity_analysator = $entity_analysator;
-        $this->sql_builder = $sql_builder;
     }
 
     public function select(string $entity, string $query)
