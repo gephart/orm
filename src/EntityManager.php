@@ -33,9 +33,18 @@ class EntityManager
         return $this->container->get($repository);
     }
 
-    public function getTable(string $entity): string
+    public function createTable(string $entity)
     {
-        return $this->builder->createTable($entity);
+        $query = $this->builder->createTable($entity);
+        $pdo = $this->connector->getPdo();
+        $pdo->exec($query);
+    }
+
+    public function deleteTable(string $entity)
+    {
+        $query = $this->builder->deleteTable($entity);
+        $pdo = $this->connector->getPdo();
+        $pdo->exec($query);
     }
 
     public function save($entity)

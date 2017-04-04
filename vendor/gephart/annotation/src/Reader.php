@@ -78,6 +78,7 @@ final class Reader
 
     private function validateValue(string $annotation_name, string $annotation_value)
     {
+        $annotation_value = str_replace("\\","\\\\", $annotation_value);
         $decode = json_decode($annotation_value, true);
 
         if (json_last_error()) {

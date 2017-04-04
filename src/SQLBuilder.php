@@ -58,6 +58,16 @@ class SQLBuilder
         return $sql;
     }
 
+    public function deleteTable(string $entity): string
+    {
+        $entity_analyse = $this->entity_analysator->analyse($entity);
+        $entity = $entity_analyse->getEntity();
+        $sql = "DROP TABLE IF EXISTS `" . $entity["ORM\\Table"] . "_translation`;" . PHP_EOL;
+        $sql .= "DROP TABLE IF EXISTS `" . $entity["ORM\\Table"] . "`;" . PHP_EOL;
+
+        return $sql;
+    }
+
     public function select(string $entity, array $where = [], array $params = [])
     {
         $entity_analyse = $this->entity_analysator->analyse($entity);

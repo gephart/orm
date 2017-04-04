@@ -93,49 +93,6 @@
         ]
     },
     {
-        "name": "gephart/dependency-injection",
-        "version": "0.2.1",
-        "version_normalized": "0.2.1.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/gephart/dependency-injection.git",
-            "reference": "c3e548640dd1e78374f33abed47ed43892807e07"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/gephart/dependency-injection/zipball/c3e548640dd1e78374f33abed47ed43892807e07",
-            "reference": "c3e548640dd1e78374f33abed47ed43892807e07",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=7.0",
-            "psr/container": "1.0.0"
-        },
-        "time": "2017-03-19T17:46:46+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Gephart\\DependencyInjection\\": "src/"
-            },
-            "exclude-from-classmap": [
-                "/Tests/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Michal Katuščák",
-                "email": "michal@katuscak.cz"
-            }
-        ],
-        "description": "Gephart DependencyInjection Component",
-        "homepage": "https://github.com/gephart/dependency-injection"
-    },
-    {
         "name": "gephart/event-manager",
         "version": "0.2.3",
         "version_normalized": "0.2.3.0",
@@ -218,5 +175,48 @@
         ],
         "description": "Gephart Annotation Component",
         "homepage": "https://github.com/gephart/annotation"
+    },
+    {
+        "name": "gephart/dependency-injection",
+        "version": "0.2.3",
+        "version_normalized": "0.2.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/gephart/dependency-injection.git",
+            "reference": "4c4b2afad0110705b2190e3b1bef3897f5e5b835"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/gephart/dependency-injection/zipball/4c4b2afad0110705b2190e3b1bef3897f5e5b835",
+            "reference": "4c4b2afad0110705b2190e3b1bef3897f5e5b835",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=7.0",
+            "psr/container": "1.0.0"
+        },
+        "time": "2017-03-29T18:17:54+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Gephart\\DependencyInjection\\": "src/"
+            },
+            "exclude-from-classmap": [
+                "/Tests/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Michal Katuščák",
+                "email": "michal@katuscak.cz"
+            }
+        ],
+        "description": "Gephart DependencyInjection Component",
+        "homepage": "https://github.com/gephart/dependency-injection"
     }
 ]

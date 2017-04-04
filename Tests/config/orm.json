@@ -1,0 +1,12 @@
+{
+  "driver": "mysqli",
+  "hostname": "localhost",
+  "port": 3306,
+  "username": "travis",
+  "password": "",
+  "database": "gephart",
+
+  "entities": [
+    "App\\Entity"
+  ]
+}
