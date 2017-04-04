@@ -68,6 +68,21 @@ class SQLBuilder
         return $sql;
     }
 
+    public function delete($entity): string
+    {
+        $entity_analyse = $this->entity_analysator->analyse(get_class($entity));
+        $entity_data = $entity_analyse->getEntity();
+        $properties = $entity_analyse->getProperties();
+
+        if (empty($properties["id"]) || !isset($properties["id"]["ORM\\Id"])) {
+            throw new \Exception("Entity '".get_class($entity)."' must have annotation ORM\\Id on id for remove.");
+        }
+
+        $sql = 'DELETE FROM `'. $entity_data["ORM\\Table"] . '` WHERE `id` = '.(int)$entity->getId().' LIMIT 1';
+
+        return $sql;
+    }
+
     public function select(string $entity, array $where = [], array $params = [])
     {
         $entity_analyse = $this->entity_analysator->analyse($entity);

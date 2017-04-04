@@ -20,12 +20,13 @@ class EntityRepository
     {
         $this->executor = $executor;
         $this->sql_builder = $sql_builder;
+        $this->entity_class = Entity::class;
     }
 
     public function findBy(array $find_by = [], array $params = [])
     {
-        $query = $this->sql_builder->select(News::class, $find_by, $params);
-        return $this->executor->select(News::class, $query);
+        $query = $this->sql_builder->select($this->entity_class, $find_by, $params);
+        return $this->executor->select($this->entity_class, $query);
     }
 
     public function find(int $id)

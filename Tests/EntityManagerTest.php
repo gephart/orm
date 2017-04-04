@@ -40,4 +40,67 @@ class EntityManagerTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($ok);
     }
 
+    public function testInsert()
+    {
+        $entity = new Entity();
+        $entity->setTitle("tes'ting");
+
+        $this->entity_manager->save($entity);
+
+        $this->assertTrue($entity->getId() > 0);
+    }
+
+    public function testSelect()
+    {
+        $repository = $this->entity_manager->getRepository(EntityRepository::class);
+        $result = $repository->findBy(["title = %1", "tes'ting"]);
+
+        $this->assertTrue(count($result) == 1);
+    }
+
+    public function testUpdate()
+    {
+        $repository = $this->entity_manager->getRepository(EntityRepository::class);
+        $result = $repository->findBy(["title = %1", "tes'ting"]);
+
+        $entity = $result[0];
+        $entity->setTitle("update_testing");
+        $this->entity_manager->save($entity);
+
+        $result = $repository->findBy(["title = %1", "tes'ting"]);
+        $this->assertTrue(count($result) == 0);
+
+        $result = $repository->findBy(["title = %1", "update_testing"]);
+        $this->assertTrue(count($result) == 1);
+    }
+
+    public function testRemove()
+    {
+        $repository = $this->entity_manager->getRepository(EntityRepository::class);
+        $result = $repository->findBy(["title = %1", "update_testing"]);
+        $entity = $result[0];
+
+        $this->entity_manager->remove($entity);
+
+        $result = $repository->findBy(["title = %1", "tes'ting"]);
+
+        $this->assertTrue(count($result) == 0);
+    }
+
+    public function testDeleteTable()
+    {
+        $this->entity_manager->deleteTable($this->entity);
+
+        $ok = false;
+        try {
+            $this->pdo->query("SELECT 1 FROM entity LIMIT 1;");
+            $this->pdo->query("SELECT 1 FROM entity_translation LIMIT 1;");
+        } catch (PDOException $exception) {
+            $ok = true;
+        }
+
+        $this->assertTrue($ok);
+    }
+
+
 }

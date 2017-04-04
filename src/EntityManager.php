@@ -68,20 +68,18 @@ class EntityManager
 
     public function remove($entity)
     {
-        $delete = 'DELETE FROM news WHERE id = :id LIMIT 1';
+        $query = $this->builder->delete($entity);
 
         $pdo = $this->connector->getPdo();
 
         try {
-            if ($entity->getId()) {
-                $sth = $pdo->prepare($delete);
-                $sth->execute([
-                    ':id' => $entity->getId(),
-                ]);
-                return true;
+            $pdo->exec($query);
+
+            if (method_exists($entity, "setId")) {
+                $entity->setId(0);
             }
 
-            return false;
+            return true;
         } catch (\PDOException $exception) {
             throw new $exception;
         }
