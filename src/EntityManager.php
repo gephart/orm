@@ -21,11 +21,17 @@ class EntityManager
      */
     private $builder;
 
-    public function __construct(Container $container, Connector $connector, SQLBuilder $builder)
+    /**
+     * @var Executor
+     */
+    private $executor;
+
+    public function __construct(Container $container, Connector $connector, SQLBuilder $builder, Executor $executor)
     {
         $this->container = $container;
         $this->connector = $connector;
         $this->builder = $builder;
+        $this->executor = $executor;
     }
 
     public function getRepository(string $repository)
@@ -45,6 +51,12 @@ class EntityManager
         $query = $this->builder->deleteTable($entity);
         $pdo = $this->connector->getPdo();
         $pdo->exec($query);
+    }
+
+    public function findBy(string $entity, array $find_by = [], array $params = [])
+    {
+        $query = $this->builder->select($entity, $find_by, $params);
+        return $this->executor->select($entity, $query);
     }
 
     public function save($entity)

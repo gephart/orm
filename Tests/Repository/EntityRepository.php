@@ -1,32 +1,24 @@
 <?php
 
-use Gephart\ORM\Executor;
-use Gephart\ORM\SQLBuilder;
+use Gephart\ORM\EntityManager;
 
 class EntityRepository
 {
 
     /**
-     * @var Executor
+     * @var EntityManager
      */
-    private $executor;
+    private $entity_manager;
 
-    /**
-     * @var SQLBuilder
-     */
-    private $sql_builder;
-
-    public function __construct(Executor $executor, SQLBuilder $sql_builder)
+    public function __construct(EntityManager $entity_manager)
     {
-        $this->executor = $executor;
-        $this->sql_builder = $sql_builder;
         $this->entity_class = Entity::class;
+        $this->entity_manager = $entity_manager;
     }
 
     public function findBy(array $find_by = [], array $params = [])
     {
-        $query = $this->sql_builder->select($this->entity_class, $find_by, $params);
-        return $this->executor->select($this->entity_class, $query);
+        return $this->entity_manager->findBy($this->entity_class, $find_by, $params);
     }
 
     public function find(int $id)
