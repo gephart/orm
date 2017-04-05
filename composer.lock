@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "7178f0f0d1c95ceede4eac3f4c13a8e8",
+    "content-hash": "9446e82ca711c6879afb802a44efc322",
     "packages": [
         {
             "name": "gephart/annotation",
-            "version": "0.2.4",
+            "version": "0.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/gephart/annotation.git",
-                "reference": "263ccc56950815ddeead70ae5faea6f29729d362"
+                "reference": "bd267db74a0b6ff21c05ad18d66ce14e5a82da7b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gephart/annotation/zipball/263ccc56950815ddeead70ae5faea6f29729d362",
-                "reference": "263ccc56950815ddeead70ae5faea6f29729d362",
+                "url": "https://api.github.com/repos/gephart/annotation/zipball/bd267db74a0b6ff21c05ad18d66ce14e5a82da7b",
+                "reference": "bd267db74a0b6ff21c05ad18d66ce14e5a82da7b",
                 "shasum": ""
             },
             "require": {
@@ -44,7 +44,7 @@
             ],
             "description": "Gephart Annotation Component",
             "homepage": "https://github.com/gephart/annotation",
-            "time": "2017-03-27T19:52:16+00:00"
+            "time": "2017-04-04T15:49:45+00:00"
         },
         {
             "name": "gephart/configuration",
@@ -166,6 +166,48 @@
             "description": "Gephart Event Manager Component",
             "homepage": "https://github.com/gephart/event-manager",
             "time": "2017-03-26T16:11:51+00:00"
+        },
+        {
+            "name": "gephart/language",
+            "version": "0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/gephart/language.git",
+                "reference": "964cb352fedcc657be82a387def41fde4a5a9f70"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/gephart/language/zipball/964cb352fedcc657be82a387def41fde4a5a9f70",
+                "reference": "964cb352fedcc657be82a387def41fde4a5a9f70",
+                "shasum": ""
+            },
+            "require": {
+                "gephart/configuration": "0.2.*",
+                "gephart/dependency-injection": "0.2.*",
+                "php": ">=7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Gephart\\Language\\": "src/"
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michal Katuščák",
+                    "email": "michal@katuscak.cz"
+                }
+            ],
+            "description": "Gephart Language Component",
+            "homepage": "https://github.com/gephart/language",
+            "time": "2017-04-05T19:18:34+00:00"
         },
         {
             "name": "psr/container",

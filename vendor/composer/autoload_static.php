@@ -14,6 +14,7 @@ class ComposerStaticInit79fab1cb3435572075ce6541b91acaaa
         'G' => 
         array (
             'Gephart\\ORM\\' => 12,
+            'Gephart\\Language\\' => 17,
             'Gephart\\EventManager\\' => 21,
             'Gephart\\DependencyInjection\\' => 28,
             'Gephart\\Configuration\\' => 22,
@@ -29,6 +30,10 @@ class ComposerStaticInit79fab1cb3435572075ce6541b91acaaa
         'Gephart\\ORM\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
+        ),
+        'Gephart\\Language\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/gephart/language/src',
         ),
         'Gephart\\EventManager\\' => 
         array (

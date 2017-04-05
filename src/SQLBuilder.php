@@ -2,6 +2,8 @@
 
 namespace Gephart\ORM;
 
+use Gephart\Language\Language;
+
 class SQLBuilder
 {
     /**
@@ -14,9 +16,15 @@ class SQLBuilder
      */
     private $pdo;
 
-    public function __construct(EntityAnalysator $entity_analysator, Connector $connector)
+    /**
+     * @var Language
+     */
+    private $language;
+
+    public function __construct(EntityAnalysator $entity_analysator, Connector $connector, Language $language)
     {
         $this->entity_analysator = $entity_analysator;
+        $this->language = $language;
         $this->pdo = $connector->getPdo();
     }
 
@@ -107,6 +115,7 @@ class SQLBuilder
                 }
             }
             $from .= " LEFT JOIN `" . $entity["ORM\\Table"] . "_translation` t_$tables_count ON t_$tables_count.`" . $entity["ORM\\Table"] . "_id` = t_".($tables_count-1).".`id`";
+            $where .= " AND t_$tables_count.`language` = " . $this->pdo->quote($this->language->get());
         }
         
         // TODO - add relations
@@ -202,7 +211,7 @@ class SQLBuilder
                     $update .= "" . $column . " = " . $value . ", ";
                 }
             }
-            $values .= "'cs',";
+            $values .= $this->pdo->quote($this->language->get()) . ",";
             $columns .= "`language`,";
 
             $values = trim($values, ", ");

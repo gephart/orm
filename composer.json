@@ -16,7 +16,8 @@
     "gephart/annotation": "0.2.*",
     "gephart/configuration": "0.2.*",
     "gephart/dependency-injection": "0.2.*",
-    "gephart/event-manager": "0.2.*"
+    "gephart/event-manager": "0.2.*",
+    "gephart/language": "0.3.*"
   },
   "autoload": {
     "psr-4": { "Gephart\\ORM\\": "src/" },

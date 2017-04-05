@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'Psr\\Container\\' => array($vendorDir . '/psr/container/src'),
     'Gephart\\ORM\\' => array($baseDir . '/src'),
+    'Gephart\\Language\\' => array($vendorDir . '/gephart/language/src'),
     'Gephart\\EventManager\\' => array($vendorDir . '/gephart/event-manager/src'),
     'Gephart\\DependencyInjection\\' => array($vendorDir . '/gephart/dependency-injection/src'),
     'Gephart\\Configuration\\' => array($vendorDir . '/gephart/configuration/src'),

@@ -10,6 +10,11 @@ class EntityRepository
      */
     private $entity_manager;
 
+    /**
+     * @var string
+     */
+    private $entity_class;
+
     public function __construct(EntityManager $entity_manager)
     {
         $this->entity_class = Entity::class;
