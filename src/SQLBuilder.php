@@ -58,9 +58,9 @@ class SQLBuilder
             $sql = trim($sql, PHP_EOL . ",") . PHP_EOL;
             $sql .= ") CHARACTER SET utf8 COLLATE utf8_general_ci;" . PHP_EOL;
             $sql .= "ALTER TABLE `" . $entity["ORM\\Table"] . "_translation`
-              ADD UNIQUE `" . $entity["ORM\\Table"] . "_id_language` (`" . $entity["ORM\\Table"] . "_id`, `language`);";
+              ADD UNIQUE `" . $entity["ORM\\Table"] . "_id_language` (`" . $entity["ORM\\Table"] . "_id`, `language`);" . PHP_EOL;
             $sql .= "ALTER TABLE `" . $entity["ORM\\Table"] . "_translation`
-              ADD FOREIGN KEY (`" . $entity["ORM\\Table"] . "_id`) REFERENCES `" . $entity["ORM\\Table"] . "` (`id`) ON DELETE CASCADE ON UPDATE CASCADE";
+              ADD FOREIGN KEY (`" . $entity["ORM\\Table"] . "_id`) REFERENCES `" . $entity["ORM\\Table"] . "` (`id`) ON DELETE CASCADE ON UPDATE CASCADE" . PHP_EOL;
         }
 
         return $sql;
