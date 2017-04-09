@@ -2,6 +2,7 @@
 
 namespace Gephart\ORM;
 
+use Gephart\ORM\Query\CreateTable;
 use Gephart\Language\Language;
 
 class SQLBuilder
@@ -33,35 +34,38 @@ class SQLBuilder
         $entity_analyse = $this->entity_analysator->analyse($entity);
         $entity = $entity_analyse->getEntity();
         $properties = $entity_analyse->getProperties();
-        $sql = "CREATE TABLE `" . $entity["ORM\\Table"] . "` (" . PHP_EOL;
+        $query = new CreateTable($entity["ORM\\Table"]);
+        $sqls = [];
         foreach ($properties as $property) {
             if (isset($property["ORM\\Id"])) {
-                $sql .= "  `id` INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY," . PHP_EOL;
+                $query->addColumn("id", "INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY");
             } elseif (!empty($property["ORM\\Type"]) && !isset($property["ORM\\Translatable"])) {
-                $sql .= "  `" . $property["ORM\\Column"] . "` " . $property["ORM\\Type"] . "," . PHP_EOL;
+                $query->addColumn($property["ORM\\Column"], $property["ORM\\Type"]);
             } elseif (!empty($property["ORM\\Relation"])) {
-                $sql .= "  `" . $property["ORM\\Column"] . "` INT(6) UNSIGNED," . PHP_EOL;
+                $query->addColumn($property["ORM\\Column"], "INT(6) UNSIGNED");
             }
         }
-        $sql = trim($sql, PHP_EOL . ",") . PHP_EOL;
-        $sql .= ") CHARACTER SET utf8 COLLATE utf8_general_ci;" . PHP_EOL;
+        $sqls[] = $query->render();
+
 
         if (isset($entity["ORM\\Translation"])) {
-            $sql .= PHP_EOL . "CREATE TABLE `" . $entity["ORM\\Table"] . "_translation` (" . PHP_EOL;
-            $sql .= "  `" . $entity["ORM\\Table"] . "_id` INT(6) UNSIGNED," . PHP_EOL;
-            $sql .= "  `language` VARCHAR(5)," . PHP_EOL;
+            $query = new CreateTable($entity["ORM\\Table"] . "_translation");
+            $query->addColumn($entity["ORM\\Table"] . "_id", "INT(6) UNSIGNED");
+            $query->addColumn("language", "VARCHAR(5)");
             foreach ($properties as $property) {
                 if (!empty($property["ORM\\Type"]) && isset($property["ORM\\Translatable"])) {
-                    $sql .= "  `" . $property["ORM\\Column"] . "` " . $property["ORM\\Type"] . "," . PHP_EOL;
+                    $query->addColumn($property["ORM\\Column"], $property["ORM\\Type"]);
                 }
             }
-            $sql = trim($sql, PHP_EOL . ",") . PHP_EOL;
-            $sql .= ") CHARACTER SET utf8 COLLATE utf8_general_ci;" . PHP_EOL;
-            $sql .= "ALTER TABLE `" . $entity["ORM\\Table"] . "_translation`
+            $sqls[] = $query->render();
+
+            $sqls[] = "ALTER TABLE `" . $entity["ORM\\Table"] . "_translation`
               ADD UNIQUE `" . $entity["ORM\\Table"] . "_id_language` (`" . $entity["ORM\\Table"] . "_id`, `language`);" . PHP_EOL;
-            $sql .= "ALTER TABLE `" . $entity["ORM\\Table"] . "_translation`
-              ADD FOREIGN KEY (`" . $entity["ORM\\Table"] . "_id`) REFERENCES `" . $entity["ORM\\Table"] . "` (`id`) ON DELETE CASCADE ON UPDATE CASCADE" . PHP_EOL;
+            $sqls[] = "ALTER TABLE `" . $entity["ORM\\Table"] . "_translation`
+              ADD FOREIGN KEY (`" . $entity["ORM\\Table"] . "_id`) REFERENCES `" . $entity["ORM\\Table"] . "` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;" . PHP_EOL;
+
         }
+        $sql = implode(PHP_EOL, $sqls);
 
         return $sql;
     }
