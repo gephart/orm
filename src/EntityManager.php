@@ -74,7 +74,7 @@ class EntityManager
             }
 
         } catch (\PDOException $exception) {
-            throw new $exception;
+            throw $exception;
         }
     }
 
@@ -93,7 +93,7 @@ class EntityManager
 
             return true;
         } catch (\PDOException $exception) {
-            throw new $exception;
+            throw $exception;
         }
     }
 }

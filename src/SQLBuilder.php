@@ -70,6 +70,62 @@ class SQLBuilder
         return $sql;
     }
 
+    public function syncTable(string $entity_name): string
+    {
+        $sqls = [];
+
+        $entity_analyse = $this->entity_analysator->analyse($entity_name);
+        $entity = $entity_analyse->getEntity();
+        $properties = $entity_analyse->getProperties();
+
+        $tables = $this->pdo->query("SHOW TABLES")->fetchAll(\PDO::FETCH_ASSOC);
+
+        $exists = false;
+        foreach ($tables as $table) {
+            if (current($table) == $entity["ORM\\Table"]) {
+                $exists = true;
+            }
+        }
+
+        if (!$exists) {
+            return $this->createTable($entity_name);
+        }
+
+
+        $columns = $this->pdo->query("SHOW COLUMNS FROM `".$entity["ORM\\Table"]."`")->fetchAll(\PDO::FETCH_ASSOC);
+        $column_names = [];
+        foreach ($columns as $column) {
+            $column_names[] = $column["Field"];
+        }
+
+        foreach ($properties as $property) {
+            if (!empty($property["ORM\\Type"]) && !isset($property["ORM\\Translatable"]) && !in_array($property["ORM\\Column"], $column_names)) {
+                $query->addColumn($property["ORM\\Column"], $property["ORM\\Type"]);
+                $sqls[] = "ALTER TABLE `".$entity["ORM\\Table"]."` ADD `".$property["ORM\\Column"]."` ".$property["ORM\\Type"].";";
+            } elseif (!empty($property["ORM\\Relation"])) {
+                $sqls[] = "ALTER TABLE `".$entity["ORM\\Table"]."` ADD `".$property["ORM\\Column"]."` INT(6) UNSIGNED;";
+            }
+        }
+
+        if (isset($entity["ORM\\Translation"])) {
+            $columns = $this->pdo->query("SHOW COLUMNS FROM `".$entity["ORM\\Table"]."_translation`")->fetchAll(\PDO::FETCH_ASSOC);
+            $column_names = [];
+            foreach ($columns as $column) {
+                $column_names[] = $column["Field"];
+            }
+
+            foreach ($properties as $property) {
+                if (!empty($property["ORM\\Type"]) && isset($property["ORM\\Translatable"]) && !in_array($property["ORM\\Column"], $column_names)) {
+                    $sqls[] = "ALTER TABLE `".$entity["ORM\\Table"]."_translation` ADD `".$property["ORM\\Column"]."` ".$property["ORM\\Type"].";";
+                }
+            }
+        }
+
+        $sql = implode(PHP_EOL, $sqls);
+
+        return $sql;
+    }
+
     public function deleteTable(string $entity): string
     {
         $entity_analyse = $this->entity_analysator->analyse($entity);
@@ -156,6 +212,11 @@ class SQLBuilder
                 } elseif (method_exists($entity,"is".ucfirst($property_name))) {
                     $value = (int) addslashes($entity->{"is" . ucfirst($property_name)}());
                 }
+
+                if ($value instanceof \DateTime) {
+                    $value = $value->format("Y-m-d H:i:s");
+                }
+
                 $value = $this->pdo->quote($value);
                 $columns .= $column.", ";
                 $values .= $value.", ";
