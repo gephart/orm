@@ -100,7 +100,6 @@ class SQLBuilder
 
         foreach ($properties as $property) {
             if (!empty($property["ORM\\Type"]) && !isset($property["ORM\\Translatable"]) && !in_array($property["ORM\\Column"], $column_names)) {
-                $query->addColumn($property["ORM\\Column"], $property["ORM\\Type"]);
                 $sqls[] = "ALTER TABLE `".$entity["ORM\\Table"]."` ADD `".$property["ORM\\Column"]."` ".$property["ORM\\Type"].";";
             } elseif (!empty($property["ORM\\Relation"])) {
                 $sqls[] = "ALTER TABLE `".$entity["ORM\\Table"]."` ADD `".$property["ORM\\Column"]."` INT(6) UNSIGNED;";
