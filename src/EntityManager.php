@@ -53,6 +53,13 @@ class EntityManager
         $pdo->exec($query);
     }
 
+    public function syncTable(string $entity)
+    {
+        $query = $this->builder->syncTable($entity);
+        $pdo = $this->connector->getPdo();
+        $pdo->exec($query);
+    }
+
     public function findBy(string $entity, array $find_by = [], array $params = [])
     {
         $query = $this->builder->select($entity, $find_by, $params);
