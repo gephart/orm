@@ -180,11 +180,11 @@ class SQLBuilder
         // TODO - add relations
 
         $sql = "SELECT $select FROM $from $where";
-        if (!empty($params["LIMIT"])) {
-            $sql .= " LIMIT " . $params["LIMIT"];
-        }
         if (!empty($params["ORDER BY"])) {
             $sql .= " ORDER BY " . $params["ORDER BY"];
+        }
+        if (!empty($params["LIMIT"])) {
+            $sql .= " LIMIT " . $params["LIMIT"];
         }
 
         return $sql;
