@@ -11,3 +11,5 @@ before_install:
 script:
   - composer install
   - phpunit Tests
+
+dist: precise
