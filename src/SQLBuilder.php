@@ -5,6 +5,13 @@ namespace Gephart\ORM;
 use Gephart\ORM\Query\CreateTable;
 use Gephart\Language\Language;
 
+/**
+ * SQL builder
+ *
+ * @package Gephart\ORM
+ * @author Michal Katuščák <michal@katuscak.cz>
+ * @since 0.2
+ */
 class SQLBuilder
 {
     /**
@@ -22,6 +29,11 @@ class SQLBuilder
      */
     private $language;
 
+    /**
+     * @param EntityAnalysator $entity_analysator
+     * @param Connector $connector
+     * @param Language $language
+     */
     public function __construct(EntityAnalysator $entity_analysator, Connector $connector, Language $language)
     {
         $this->entity_analysator = $entity_analysator;
@@ -29,6 +41,10 @@ class SQLBuilder
         $this->pdo = $connector->getPdo();
     }
 
+    /**
+     * @param string $entity
+     * @return string
+     */
     public function createTable(string $entity): string
     {
         $entity_analyse = $this->entity_analysator->analyse($entity);
@@ -70,6 +86,10 @@ class SQLBuilder
         return $sql;
     }
 
+    /**
+     * @param string $entity_name
+     * @return string
+     */
     public function syncTable(string $entity_name): string
     {
         $sqls = [];
@@ -125,6 +145,10 @@ class SQLBuilder
         return $sql;
     }
 
+    /**
+     * @param string $entity
+     * @return string
+     */
     public function deleteTable(string $entity): string
     {
         $entity_analyse = $this->entity_analysator->analyse($entity);
@@ -135,6 +159,11 @@ class SQLBuilder
         return $sql;
     }
 
+    /**
+     * @param $entity
+     * @return string
+     * @throws \Exception
+     */
     public function delete($entity): string
     {
         $entity_analyse = $this->entity_analysator->analyse(get_class($entity));
@@ -150,6 +179,12 @@ class SQLBuilder
         return $sql;
     }
 
+    /**
+     * @param string $entity
+     * @param array $where
+     * @param array $params
+     * @return string
+     */
     public function select(string $entity, array $where = [], array $params = [])
     {
         $entity_analyse = $this->entity_analysator->analyse($entity);
@@ -190,6 +225,10 @@ class SQLBuilder
         return $sql;
     }
 
+    /**
+     * @param $entity
+     * @return array
+     */
     public function update($entity): array
     {
         $entity_analyse = $this->entity_analysator->analyse(get_class($entity));
@@ -288,6 +327,11 @@ class SQLBuilder
         return $sqls;
     }
 
+    /**
+     * @param array $where_data
+     * @param string $type
+     * @return string
+     */
     public function where(array $where_data = [], string $type = "AND"): string
     {
         $where = [];

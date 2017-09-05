@@ -2,6 +2,13 @@
 
 namespace Gephart\ORM;
 
+/**
+ * Query executor
+ *
+ * @package Gephart\ORM
+ * @author Michal Katuščák <michal@katuscak.cz>
+ * @since 0.2
+ */
 class Executor
 {
     /**
@@ -14,12 +21,21 @@ class Executor
      */
     private $entity_analysator;
 
+    /**
+     * @param Connector $connector
+     * @param EntityAnalysator $entity_analysator
+     */
     public function __construct(Connector $connector, EntityAnalysator $entity_analysator)
     {
         $this->connector = $connector;
         $this->entity_analysator = $entity_analysator;
     }
 
+    /**
+     * @param string $entity
+     * @param string $query
+     * @return array
+     */
     public function select(string $entity, string $query)
     {
         $entity_analyse = $this->entity_analysator->analyse($entity);

@@ -2,6 +2,13 @@
 
 namespace Gephart\ORM;
 
+/**
+ * Entity analyse
+ *
+ * @package Gephart\ORM
+ * @author Michal Katuščák <michal@katuscak.cz>
+ * @since 0.2
+ */
 class EntityAnalyse
 {
     /**

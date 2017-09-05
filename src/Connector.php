@@ -4,6 +4,13 @@ namespace Gephart\ORM;
 
 use Gephart\ORM\Configuration\ORMConfiguration;
 
+/**
+ * Connector
+ *
+ * @package Gephart\ORM
+ * @author Michal Katuščák <michal@katuscak.cz>
+ * @since 0.2
+ */
 class Connector
 {
 
@@ -17,6 +24,9 @@ class Connector
      */
     private $pdo;
 
+    /**
+     * @param ORMConfiguration $database_configuration
+     */
     public function __construct(ORMConfiguration $database_configuration)
     {
         $this->database_configuration = $database_configuration;
@@ -30,6 +40,9 @@ class Connector
         $this->pdo->query("SET NAMES utf8;");
     }
 
+    /**
+     * @return \PDO
+     */
     public function getPdo(): \PDO
     {
         return $this->pdo;

@@ -4,8 +4,18 @@ namespace Gephart\ORM;
 
 use Gephart\Annotation\Reader;
 
+/**
+ * Entity analysator
+ *
+ * @package Gephart\ORM
+ * @author Michal Katuščák <michal@katuscak.cz>
+ * @since 0.2
+ */
 class EntityAnalysator
 {
+    /**
+     * @var array
+     */
     private $entity_must_have_annotation = [
         "ORM\\Table"
     ];
@@ -15,11 +25,19 @@ class EntityAnalysator
      */
     private $reader;
 
+    /**
+     * @param Reader $reader
+     */
     public function __construct(Reader $reader)
     {
         $this->reader = $reader;
     }
 
+    /**
+     * @param string $entity
+     * @return EntityAnalyse
+     * @throws \Exception
+     */
     public function analyse(string $entity): EntityAnalyse
     {
         if (!class_exists($entity)) {
@@ -43,6 +61,11 @@ class EntityAnalysator
         return $entity_analyse;
     }
 
+    /**
+     * @param string $entity
+     * @param array $entity_annotation
+     * @throws \Exception
+     */
     private function checkValidEntity(string $entity, array $entity_annotation)
     {
         foreach ($this->entity_must_have_annotation as $must_have) {
