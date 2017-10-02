@@ -51,7 +51,7 @@ class Executor
         foreach ($results as $result) {
             $result_entity = new $entity;
 
-            foreach ($properties as $property_name=>$property) {
+            foreach ($properties as $property_name => $property) {
                 if (!empty($property["ORM\\Column"])) {
                     if ($result[$property["ORM\\Column"]] !== null) {
                         $result_value = $result[$property["ORM\\Column"]];
@@ -60,7 +60,7 @@ class Executor
                             $result_value = new \DateTime($result_value);
                         }
 
-                        $property_name = str_replace("_","",$property_name);
+                        $property_name = str_replace("_", "", $property_name);
                         $result_entity->{"set".ucfirst($property_name)}($result_value);
                     }
                 } elseif (isset($property["ORM\\Id"])) {

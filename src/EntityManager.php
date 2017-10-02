@@ -104,14 +104,13 @@ class EntityManager
             $queries = $this->builder->update($entity);
             $pdo = $this->connector->getPdo();
 
-            foreach ($queries as $key=>$query) {
+            foreach ($queries as $key => $query) {
                 $pdo->query($query);
 
                 if ($key == 0 && !$entity->getId()) {
                     $entity->setId($pdo->lastInsertId());
                 }
             }
-
         } catch (\PDOException $exception) {
             throw $exception;
         }

@@ -76,10 +76,11 @@ class SQLBuilder
             $sqls[] = $query->render();
 
             $sqls[] = "ALTER TABLE `" . $entity["ORM\\Table"] . "_translation`
-              ADD UNIQUE `" . $entity["ORM\\Table"] . "_id_language` (`" . $entity["ORM\\Table"] . "_id`, `language`);" . PHP_EOL;
+              ADD UNIQUE `" . $entity["ORM\\Table"] . "_id_language` (`" . $entity["ORM\\Table"] . "_id`, `language`);"
+                . PHP_EOL;
             $sqls[] = "ALTER TABLE `" . $entity["ORM\\Table"] . "_translation`
-              ADD FOREIGN KEY (`" . $entity["ORM\\Table"] . "_id`) REFERENCES `" . $entity["ORM\\Table"] . "` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;" . PHP_EOL;
-
+              ADD FOREIGN KEY (`" . $entity["ORM\\Table"] . "_id`) REFERENCES `" . $entity["ORM\\Table"]
+                . "` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;" . PHP_EOL;
         }
         $sql = implode(PHP_EOL, $sqls);
 
@@ -112,30 +113,40 @@ class SQLBuilder
         }
 
 
-        $columns = $this->pdo->query("SHOW COLUMNS FROM `".$entity["ORM\\Table"]."`")->fetchAll(\PDO::FETCH_ASSOC);
+        $query = $this->pdo->query("SHOW COLUMNS FROM `".$entity["ORM\\Table"]."`");
+        $columns = $query->fetchAll(\PDO::FETCH_ASSOC);
         $column_names = [];
         foreach ($columns as $column) {
             $column_names[] = $column["Field"];
         }
 
         foreach ($properties as $property) {
-            if (!empty($property["ORM\\Type"]) && !isset($property["ORM\\Translatable"]) && !in_array($property["ORM\\Column"], $column_names)) {
-                $sqls[] = "ALTER TABLE `".$entity["ORM\\Table"]."` ADD `".$property["ORM\\Column"]."` ".$property["ORM\\Type"].";";
+            if (!empty($property["ORM\\Type"])
+                && !isset($property["ORM\\Translatable"])
+                && !in_array($property["ORM\\Column"], $column_names)
+            ) {
+                $sqls[] = "ALTER TABLE `".$entity["ORM\\Table"]."` ADD `".$property["ORM\\Column"]
+                    ."` ".$property["ORM\\Type"].";";
             } elseif (!empty($property["ORM\\Relation"])) {
                 $sqls[] = "ALTER TABLE `".$entity["ORM\\Table"]."` ADD `".$property["ORM\\Column"]."` INT(6) UNSIGNED;";
             }
         }
 
         if (isset($entity["ORM\\Translation"])) {
-            $columns = $this->pdo->query("SHOW COLUMNS FROM `".$entity["ORM\\Table"]."_translation`")->fetchAll(\PDO::FETCH_ASSOC);
+            $query = $this->pdo->query("SHOW COLUMNS FROM `".$entity["ORM\\Table"]."_translation`");
+            $columns = $query->fetchAll(\PDO::FETCH_ASSOC);
             $column_names = [];
             foreach ($columns as $column) {
                 $column_names[] = $column["Field"];
             }
 
             foreach ($properties as $property) {
-                if (!empty($property["ORM\\Type"]) && isset($property["ORM\\Translatable"]) && !in_array($property["ORM\\Column"], $column_names)) {
-                    $sqls[] = "ALTER TABLE `".$entity["ORM\\Table"]."_translation` ADD `".$property["ORM\\Column"]."` ".$property["ORM\\Type"].";";
+                if (!empty($property["ORM\\Type"])
+                    && isset($property["ORM\\Translatable"])
+                    && !in_array($property["ORM\\Column"], $column_names)
+                ) {
+                    $sqls[] = "ALTER TABLE `".$entity["ORM\\Table"]."_translation` ADD `".$property["ORM\\Column"]
+                        ."` ".$property["ORM\\Type"].";";
                 }
             }
         }
@@ -208,7 +219,10 @@ class SQLBuilder
                     $select .= ", t_$tables_count.`".$property["ORM\\Column"]."`";
                 }
             }
-            $from .= " LEFT JOIN `" . $entity["ORM\\Table"] . "_translation` t_$tables_count ON t_$tables_count.`" . $entity["ORM\\Table"] . "_id` = t_".($tables_count-1).".`id`";
+            $from .= " LEFT JOIN `"
+                . $entity["ORM\\Table"]
+                . "_translation` t_$tables_count ON t_$tables_count.`"
+                . $entity["ORM\\Table"] . "_id` = t_".($tables_count-1).".`id`";
             $where .= " AND t_$tables_count.`language` = " . $this->pdo->quote($this->language->get());
         }
         
@@ -241,13 +255,13 @@ class SQLBuilder
         $columns = "";
         $values = "";
         $update = "";
-        foreach ($properties as $property_name=>$property) {
-            $property_name = str_replace("_","",$property_name);
+        foreach ($properties as $property_name => $property) {
+            $property_name = str_replace("_", "", $property_name);
             if (!isset($property["ORM\\Translatable"]) && !empty($property["ORM\\Column"])) {
                 $column = "`".$property["ORM\\Column"]."`";
-                if (method_exists($entity,"get".ucfirst($property_name))) {
+                if (method_exists($entity, "get".ucfirst($property_name))) {
                     $value = $entity->{"get" . ucfirst($property_name)}();
-                } elseif (method_exists($entity,"is".ucfirst($property_name))) {
+                } elseif (method_exists($entity, "is".ucfirst($property_name))) {
                     $value = (int) addslashes($entity->{"is" . ucfirst($property_name)}());
                 }
 
@@ -259,7 +273,7 @@ class SQLBuilder
                 $columns .= $column.", ";
                 $values .= $value.", ";
                 $update .= "".$column." = ".$value.", ";
-            } elseif(!isset($property["ORM\\Translatable"]) && isset($property["ORM\\Id"])){
+            } elseif (!isset($property["ORM\\Translatable"]) && isset($property["ORM\\Id"])) {
                 $column = "`id`";
                 $value = $entity->{"get" . ucfirst($property_name)}();
                 $value = $this->pdo->quote($value);
@@ -338,7 +352,7 @@ class SQLBuilder
 
         foreach ($where_data as $key => $value) {
             if ($key == "AND" && is_array($value)) {
-                $where[] = trim($this->where($value),"()");
+                $where[] = trim($this->where($value), "()");
             } elseif ($key == "OR" && is_array($value)) {
                 $where[] = $this->where($value, "OR");
             } elseif (is_array($value)) {
@@ -364,5 +378,4 @@ class SQLBuilder
 
         return "1";
     }
-
 }

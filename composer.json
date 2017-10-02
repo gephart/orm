@@ -19,6 +19,9 @@
     "gephart/event-manager": "0.4.*",
     "gephart/language": "0.4.*"
   },
+  "require-dev": {
+    "squizlabs/php_codesniffer": "3.*"
+  },
   "autoload": {
     "psr-4": { "Gephart\\ORM\\": "src/" },
     "exclude-from-classmap": [

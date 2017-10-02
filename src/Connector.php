@@ -32,7 +32,9 @@ class Connector
         $this->database_configuration = $database_configuration;
 
         $this->pdo = new \PDO(
-            'mysql:host='.$database_configuration->get("hostname").';port='.$database_configuration->get("port").';dbname='.$database_configuration->get("database").'',
+            'mysql:host='.$database_configuration->get("hostname")
+            .';port='.$database_configuration->get("port")
+            .';dbname='.$database_configuration->get("database").'',
             $database_configuration->get("username"),
             $database_configuration->get("password")
         );
@@ -47,5 +49,4 @@ class Connector
     {
         return $this->pdo;
     }
-
 }
