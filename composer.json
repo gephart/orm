@@ -15,9 +15,9 @@
     "php": ">=7.1",
     "gephart/annotation": "0.4.*",
     "gephart/configuration": "0.4.*",
-    "gephart/dependency-injection": "0.4.*",
+    "gephart/dependency-injection": "dev-master",
     "gephart/event-manager": "0.4.*",
-    "gephart/language": "0.4.*"
+    "gephart/language": "dev-master"
   },
   "require-dev": {
     "squizlabs/php_codesniffer": "3.*"
