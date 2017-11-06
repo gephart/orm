@@ -2,8 +2,14 @@
 
 namespace Gephart\ORM;
 
+use Gephart\ORM\Query\Condition;
 use Gephart\ORM\Query\CreateTable;
 use Gephart\Language\Language;
+use Gephart\ORM\Query\LeftJoin;
+use Gephart\ORM\Query\Limit;
+use Gephart\ORM\Query\OrderBy;
+use Gephart\ORM\Query\Select;
+use Gephart\ORM\Query\Where;
 
 /**
  * SQL builder
@@ -204,39 +210,48 @@ class SQLBuilder
 
         $tables_count = 1;
 
-        $select = "t_$tables_count.*";
-        $from = "`" . $entity["ORM\\Table"] . "` t_$tables_count";
+        $select = new Select("t_$tables_count.*");
+        $select->setTable("`" . $entity["ORM\\Table"] . "` t_$tables_count");
 
-        $where = $this->where($where);
-        if ($where) {
-            $where = "WHERE " . $where;
-        }
+        $condition = new Condition($this->where($where));
 
         if (isset($entity["ORM\\Translation"])) {
             $tables_count++;
+
+            $join = new LeftJoin();
+            $join->setTable("`" . $entity["ORM\\Table"] . "_translation` t_$tables_count");
+
+            $join->setCondition(
+                new Condition(
+                    "t_$tables_count.`" . $entity["ORM\\Table"] . "_id` = t_".($tables_count-1).".`id`"
+                )
+            );
+
             foreach ($properties as $property) {
                 if (isset($property["ORM\\Translatable"])) {
-                    $select .= ", t_$tables_count.`".$property["ORM\\Column"]."`";
+                    $select->append(", t_$tables_count.`".$property["ORM\\Column"]."`");
                 }
             }
-            $from .= " LEFT JOIN `"
-                . $entity["ORM\\Table"]
-                . "_translation` t_$tables_count ON t_$tables_count.`"
-                . $entity["ORM\\Table"] . "_id` = t_".($tables_count-1).".`id`";
-            $where .= " AND t_$tables_count.`language` = " . $this->pdo->quote($this->language->get());
+
+            $condition->addAnd("t_$tables_count.`language` = " . $this->pdo->quote($this->language->get()));
+
+            $select->setJoin($join);
         }
         
         // TODO - add relations
 
-        $sql = "SELECT $select FROM $from $where";
+        $where = new Where();
+        $where->setCondition($condition);
+        $select->setWhere($where);
+
         if (!empty($params["ORDER BY"])) {
-            $sql .= " ORDER BY " . $params["ORDER BY"];
+            $select->setOrderBy(new OrderBy($params["ORDER BY"]));
         }
         if (!empty($params["LIMIT"])) {
-            $sql .= " LIMIT " . $params["LIMIT"];
+            $select->setLimit(new Limit($params["LIMIT"]));
         }
 
-        return $sql;
+        return $select->render();
     }
 
     /**
