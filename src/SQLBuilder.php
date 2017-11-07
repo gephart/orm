@@ -2,6 +2,7 @@
 
 namespace Gephart\ORM;
 
+use Gephart\ORM\Builder\DeleteBuilder;
 use Gephart\ORM\Builder\SelectBuilder;
 use Gephart\ORM\Query\Condition;
 use Gephart\ORM\Query\CreateTable;
@@ -43,6 +44,11 @@ class SQLBuilder
     private $selectBuilder;
 
     /**
+     * @var DeleteBuilder
+     */
+    private $deleteBuilder;
+
+    /**
      * @param EntityAnalysator $entity_analysator
      * @param Connector $connector
      * @param Language $language
@@ -51,12 +57,14 @@ class SQLBuilder
         EntityAnalysator $entity_analysator,
         Connector $connector,
         Language $language,
-        SelectBuilder $selectBuilder
+        SelectBuilder $selectBuilder,
+        DeleteBuilder $deleteBuilder
     ) {
         $this->entity_analysator = $entity_analysator;
         $this->language = $language;
         $this->pdo = $connector->getPdo();
         $this->selectBuilder = $selectBuilder;
+        $this->deleteBuilder = $deleteBuilder;
     }
 
     /**
@@ -195,19 +203,7 @@ class SQLBuilder
      */
     public function delete($entity): string
     {
-        $entity_analyse = $this->entity_analysator->analyse(get_class($entity));
-        $entity_data = $entity_analyse->getEntity();
-        $properties = $entity_analyse->getProperties();
-
-        if (empty($properties["id"]) || !isset($properties["id"]["ORM\\Id"])) {
-            throw new \Exception("Entity '".get_class($entity)."' must have annotation ORM\\Id on id for remove.");
-        }
-
-        $delete = new Delete();
-        $delete->setTable('`'. $entity_data["ORM\\Table"] . '`');
-        $delete->setWhere(new Condition('`id` = '.(int)$entity->getId().''));
-        $delete->setLimit(new Limit("1"));
-
+        $delete = $this->deleteBuilder->build($entity);
         return $delete->render();
     }
 
