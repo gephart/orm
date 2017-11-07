@@ -2,6 +2,7 @@
 
 namespace Gephart\ORM;
 
+use Gephart\ORM\Builder\SelectBuilder;
 use Gephart\ORM\Query\Condition;
 use Gephart\ORM\Query\CreateTable;
 use Gephart\Language\Language;
@@ -37,15 +38,25 @@ class SQLBuilder
     private $language;
 
     /**
+     * @var SelectBuilder
+     */
+    private $selectBuilder;
+
+    /**
      * @param EntityAnalysator $entity_analysator
      * @param Connector $connector
      * @param Language $language
      */
-    public function __construct(EntityAnalysator $entity_analysator, Connector $connector, Language $language)
-    {
+    public function __construct(
+        EntityAnalysator $entity_analysator,
+        Connector $connector,
+        Language $language,
+        SelectBuilder $selectBuilder
+    ) {
         $this->entity_analysator = $entity_analysator;
         $this->language = $language;
         $this->pdo = $connector->getPdo();
+        $this->selectBuilder = $selectBuilder;
     }
 
     /**
@@ -208,51 +219,7 @@ class SQLBuilder
      */
     public function select(string $entity, array $where = [], array $params = [])
     {
-        $entity_analyse = $this->entity_analysator->analyse($entity);
-        $entity = $entity_analyse->getEntity();
-        $properties = $entity_analyse->getProperties();
-
-        $tables_count = 1;
-
-        $select = new Select("t_$tables_count.*");
-        $select->setTable("`" . $entity["ORM\\Table"] . "` t_$tables_count");
-
-        $condition = new Condition($this->where($where));
-
-        if (isset($entity["ORM\\Translation"])) {
-            $tables_count++;
-
-            $join = new LeftJoin();
-            $join->setTable("`" . $entity["ORM\\Table"] . "_translation` t_$tables_count");
-
-            $join->setCondition(
-                new Condition(
-                    "t_$tables_count.`" . $entity["ORM\\Table"] . "_id` = t_".($tables_count-1).".`id`"
-                )
-            );
-
-            foreach ($properties as $property) {
-                if (isset($property["ORM\\Translatable"])) {
-                    $select->append(", t_$tables_count.`".$property["ORM\\Column"]."`");
-                }
-            }
-
-            $condition->addAnd("t_$tables_count.`language` = " . $this->pdo->quote($this->language->get()));
-
-            $select->setJoin($join);
-        }
-        
-        // TODO - add relations
-
-        $select->setWhere($condition);
-
-        if (!empty($params["ORDER BY"])) {
-            $select->setOrderBy(new OrderBy($params["ORDER BY"]));
-        }
-        if (!empty($params["LIMIT"])) {
-            $select->setLimit(new Limit($params["LIMIT"]));
-        }
-
+        $select = $this->selectBuilder->build($entity, $where, $params);
         return $select->render();
     }
 

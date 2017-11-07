@@ -18,9 +18,11 @@ final class Condition implements RenderInterface
     /** @var string[] */
     private $or = [];
 
-    public function __construct($condition)
+    public function __construct($condition = "")
     {
-        $this->addAnd($condition);
+        if (!empty($condition)) {
+            $this->addAnd($condition);
+        }
     }
 
     /**

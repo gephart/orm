@@ -3,7 +3,7 @@
 namespace Gephart\ORM\Query;
 
 /**
- * SELECT query
+ * DELETE query
  *
  * @package Gephart\ORM\Query
  * @author Michal Katuščák <michal@katuscak.cz>
