@@ -19,7 +19,7 @@ final class Select implements RenderInterface
     private $where;
 
     /**
-     * @var Join
+     * @var Condition
      * */
     private $join;
 
@@ -49,9 +49,9 @@ final class Select implements RenderInterface
     }
 
     /**
-     * @param Where $where
+     * @param Condition $where
      */
-    public function setWhere(Where $where)
+    public function setWhere(Condition $where)
     {
         $this->where = $where;
     }
@@ -89,7 +89,7 @@ final class Select implements RenderInterface
         }
 
         if ($this->where) {
-            $sql .= " " . $this->where->render();
+            $sql .= " WHERE " . $this->where->render();
         }
 
         if ($this->orderBy) {

@@ -5,6 +5,7 @@ namespace Gephart\ORM;
 use Gephart\ORM\Query\Condition;
 use Gephart\ORM\Query\CreateTable;
 use Gephart\Language\Language;
+use Gephart\ORM\Query\Delete;
 use Gephart\ORM\Query\LeftJoin;
 use Gephart\ORM\Query\Limit;
 use Gephart\ORM\Query\OrderBy;
@@ -191,9 +192,12 @@ class SQLBuilder
             throw new \Exception("Entity '".get_class($entity)."' must have annotation ORM\\Id on id for remove.");
         }
 
-        $sql = 'DELETE FROM `'. $entity_data["ORM\\Table"] . '` WHERE `id` = '.(int)$entity->getId().' LIMIT 1';
+        $delete = new Delete();
+        $delete->setTable('`'. $entity_data["ORM\\Table"] . '`');
+        $delete->setWhere(new Condition('`id` = '.(int)$entity->getId().''));
+        $delete->setLimit(new Limit("1"));
 
-        return $sql;
+        return $delete->render();
     }
 
     /**
@@ -240,9 +244,7 @@ class SQLBuilder
         
         // TODO - add relations
 
-        $where = new Where();
-        $where->setCondition($condition);
-        $select->setWhere($where);
+        $select->setWhere($condition);
 
         if (!empty($params["ORDER BY"])) {
             $select->setOrderBy(new OrderBy($params["ORDER BY"]));
