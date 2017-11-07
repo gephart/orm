@@ -197,26 +197,25 @@ class SQLBuilder
     }
 
     /**
-     * @param $entity
-     * @return string
-     * @throws \Exception
-     */
-    public function delete($entity): string
-    {
-        $delete = $this->deleteBuilder->build($entity);
-        return $delete->render();
-    }
-
-    /**
      * @param string $entity
      * @param array $where
      * @param array $params
      * @return string
      */
-    public function select(string $entity, array $where = [], array $params = [])
+    public function select(string $entity, array $where = [], array $params = []): string
     {
         $select = $this->selectBuilder->build($entity, $where, $params);
         return $select->render();
+    }
+
+    /**
+     * @param $entity
+     * @return string
+     */
+    public function delete($entity): string
+    {
+        $delete = $this->deleteBuilder->build($entity);
+        return $delete->render();
     }
 
     /**
