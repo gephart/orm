@@ -2,17 +2,10 @@
 
 namespace Gephart\ORM;
 
+use Gephart\ORM\Builder\CreateTableBuilder;
 use Gephart\ORM\Builder\DeleteBuilder;
 use Gephart\ORM\Builder\SelectBuilder;
-use Gephart\ORM\Query\Condition;
-use Gephart\ORM\Query\CreateTable;
 use Gephart\Language\Language;
-use Gephart\ORM\Query\Delete;
-use Gephart\ORM\Query\LeftJoin;
-use Gephart\ORM\Query\Limit;
-use Gephart\ORM\Query\OrderBy;
-use Gephart\ORM\Query\Select;
-use Gephart\ORM\Query\Where;
 
 /**
  * SQL builder
@@ -49,22 +42,32 @@ class SQLBuilder
     private $deleteBuilder;
 
     /**
+     * @var CreateTableBuilder
+     */
+    private $createTableBuilder;
+
+    /**
      * @param EntityAnalysator $entity_analysator
      * @param Connector $connector
      * @param Language $language
+     * @param SelectBuilder $selectBuilder
+     * @param DeleteBuilder $deleteBuilder
+     * @param CreateTableBuilder $createTableBuilder
      */
     public function __construct(
         EntityAnalysator $entity_analysator,
         Connector $connector,
         Language $language,
         SelectBuilder $selectBuilder,
-        DeleteBuilder $deleteBuilder
+        DeleteBuilder $deleteBuilder,
+        CreateTableBuilder $createTableBuilder
     ) {
         $this->entity_analysator = $entity_analysator;
         $this->language = $language;
         $this->pdo = $connector->getPdo();
         $this->selectBuilder = $selectBuilder;
         $this->deleteBuilder = $deleteBuilder;
+        $this->createTableBuilder = $createTableBuilder;
     }
 
     /**
@@ -73,43 +76,7 @@ class SQLBuilder
      */
     public function createTable(string $entity): string
     {
-        $entity_analyse = $this->entity_analysator->analyse($entity);
-        $entity = $entity_analyse->getEntity();
-        $properties = $entity_analyse->getProperties();
-        $query = new CreateTable($entity["ORM\\Table"]);
-        $sqls = [];
-        foreach ($properties as $property) {
-            if (isset($property["ORM\\Id"])) {
-                $query->addColumn("id", "INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY");
-            } elseif (!empty($property["ORM\\Type"]) && !isset($property["ORM\\Translatable"])) {
-                $query->addColumn($property["ORM\\Column"], $property["ORM\\Type"]);
-            } elseif (!empty($property["ORM\\Relation"])) {
-                $query->addColumn($property["ORM\\Column"], "INT(6) UNSIGNED");
-            }
-        }
-        $sqls[] = $query->render();
-
-
-        if (isset($entity["ORM\\Translation"])) {
-            $query = new CreateTable($entity["ORM\\Table"] . "_translation");
-            $query->addColumn($entity["ORM\\Table"] . "_id", "INT(6) UNSIGNED");
-            $query->addColumn("language", "VARCHAR(5)");
-            foreach ($properties as $property) {
-                if (!empty($property["ORM\\Type"]) && isset($property["ORM\\Translatable"])) {
-                    $query->addColumn($property["ORM\\Column"], $property["ORM\\Type"]);
-                }
-            }
-            $sqls[] = $query->render();
-
-            $sqls[] = "ALTER TABLE `" . $entity["ORM\\Table"] . "_translation`
-              ADD UNIQUE `" . $entity["ORM\\Table"] . "_id_language` (`" . $entity["ORM\\Table"] . "_id`, `language`);"
-                . PHP_EOL;
-            $sqls[] = "ALTER TABLE `" . $entity["ORM\\Table"] . "_translation`
-              ADD FOREIGN KEY (`" . $entity["ORM\\Table"] . "_id`) REFERENCES `" . $entity["ORM\\Table"]
-                . "` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;" . PHP_EOL;
-        }
-        $sql = implode(PHP_EOL, $sqls);
-
+        $sql = $this->createTableBuilder->build($entity);
         return $sql;
     }
 
