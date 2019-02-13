@@ -59,8 +59,11 @@ class EntityManager
     public function createTable(string $entity)
     {
         $query = $this->builder->createTable($entity);
-        $pdo = $this->connector->getPdo();
-        $pdo->exec($query);
+
+        if (!empty($query)) {
+            $pdo = $this->connector->getPdo();
+            $pdo->exec($query);
+        }
     }
 
     /**
@@ -69,8 +72,11 @@ class EntityManager
     public function deleteTable(string $entity)
     {
         $query = $this->builder->deleteTable($entity);
-        $pdo = $this->connector->getPdo();
-        $pdo->exec($query);
+
+        if (!empty($query)) {
+            $pdo = $this->connector->getPdo();
+            $pdo->exec($query);
+        }
     }
 
     /**
@@ -79,8 +85,11 @@ class EntityManager
     public function syncTable(string $entity)
     {
         $query = $this->builder->syncTable($entity);
-        $pdo = $this->connector->getPdo();
-        $pdo->exec($query);
+
+        if (!empty($query)) {
+            $pdo = $this->connector->getPdo();
+            $pdo->exec($query);
+        }
     }
 
     /**
@@ -123,6 +132,10 @@ class EntityManager
     public function remove($entity)
     {
         $query = $this->builder->delete($entity);
+
+        if (empty($query)) {
+            return false;
+        }
 
         $pdo = $this->connector->getPdo();
 
