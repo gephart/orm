@@ -12,7 +12,7 @@ class EntityManagerTest extends \PHPUnit\Framework\TestCase
     private $entity;
     private $pdo;
 
-    public function setUp()
+    public function setUp(): void
     {
         $container = new \Gephart\DependencyInjection\Container();
         $configuration = $container->get(\Gephart\Configuration\Configuration::class);

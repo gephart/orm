@@ -2,8 +2,8 @@
   "driver": "mysqli",
   "hostname": "localhost",
   "port": 3306,
-  "username": "travis",
-  "password": "",
+  "username": "root",
+  "password": "localhost",
   "database": "gephart",
 
   "entities": [
