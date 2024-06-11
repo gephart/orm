@@ -31,7 +31,7 @@ jobs:
 
     - name: Create database
       run: |
-        echo "CREATE DATABASE gephart;" | mysql -h 127.0.0.1 -P 4444 -u root -p localhost
+        echo "CREATE DATABASE gephart;" | mysql -h 127.0.0.1 -P 4444 -u root -plocalhost
 
     - name: Validate composer.json and composer.lock
       run: composer validate --strict
