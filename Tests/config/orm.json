@@ -1,7 +1,7 @@
 {
   "driver": "mysqli",
   "hostname": "localhost",
-  "port": 3306,
+  "port": 4444,
   "username": "root",
   "password": "localhost",
   "database": "gephart",
