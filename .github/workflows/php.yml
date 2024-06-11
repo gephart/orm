@@ -13,22 +13,25 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         php: ['7.4', '8.0', '8.1']
-        mysql-versions: ["8.1"]
 
       fail-fast: false
     name: PHP ${{ matrix.php }} tests on ${{ matrix.os }}
 
     services:
       mysql:
-        image: ghcr.io/nextcloud/continuous-integration-mysql-${{ matrix.mysql-versions }}:latest
+        image: mariadb:10.5
         ports:
           - 4444:3306/tcp
         env:
           MYSQL_ROOT_PASSWORD: localhost
-        options: --health-cmd="mysqladmin ping" --health-interval 5s --health-timeout 2s --health-retries 10
+        options: --health-cmd="mysqladmin ping" --health-interval 5s --health-timeout 2s --health-retries 5
 
     steps:
     - uses: actions/checkout@v3
+
+    - name: Create database
+      run: |
+        echo "CREATE DATABASE gephart;" | mysql -h 127.0.0.1 -P 4444 -u root -localhost
 
     - name: Validate composer.json and composer.lock
       run: composer validate --strict
