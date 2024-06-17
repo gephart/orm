@@ -215,17 +215,24 @@ class SQLBuilder
                     $value = $value->format("Y-m-d H:i:s");
                 }
 
-                $value = $this->pdo->quote($value);
+                if ($value) {
+                    $value = $this->pdo->quote($value);
+                } else {
+                    $value = "null";
+                }
                 $columns .= $column.", ";
                 $values .= $value.", ";
                 $update .= "".$column." = ".$value.", ";
             } elseif (!isset($property["ORM\\Translatable"]) && isset($property["ORM\\Id"])) {
                 $column = "`id`";
                 $value = $entity->{"get" . ucfirst($property_name)}();
-                $value = $this->pdo->quote($value);
-                if ($value == "''") {
+
+                if ($value) {
+                    $value = $this->pdo->quote($value);
+                } else {
                     $value = "null";
                 }
+
                 $columns .= $column.", ";
                 $values .= $value.", ";
                 $update .= "".$column." = ".$value.", ";
@@ -257,7 +264,11 @@ class SQLBuilder
                         $value = $value->format("Y-m-d H:i:s");
                     }
 
-                    $value = $this->pdo->quote($value);
+                    if ($value) {
+                        $value = $this->pdo->quote($value);
+                    } else {
+                        $value = "null";
+                    }
                     $columns .= $column . ", ";
                     $values .= $value . ", ";
                     $update .= "" . $column . " = " . $value . ", ";
