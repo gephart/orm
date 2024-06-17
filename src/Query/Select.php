@@ -88,8 +88,9 @@ final class Select implements RenderInterface
             $sql .= " " . $this->join->render();
         }
 
-        if ($this->where) {
-            $sql .= " WHERE " . $this->where->render();
+        $where = $this->where->render();
+        if ($this->where && $where) {
+            $sql .= " WHERE " . $where;
         }
 
         if ($this->orderBy) {

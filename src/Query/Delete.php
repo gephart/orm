@@ -43,8 +43,9 @@ final class Delete implements RenderInterface
     {
         $sql = "DELETE FROM $this->table";
 
-        if ($this->where) {
-            $sql .= " WHERE " . $this->where->render();
+        $where = $this->where->render();
+        if ($this->where && $where) {
+            $sql .= " WHERE " . $where;
         }
 
         if ($this->limit) {

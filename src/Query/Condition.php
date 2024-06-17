@@ -77,6 +77,7 @@ final class Condition implements RenderInterface
             return $ors;
         }
 
-        throw new \RuntimeException("Blank condition");
+        return "";
+        //throw new \RuntimeException("Blank condition");
     }
 }
