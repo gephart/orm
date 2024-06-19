@@ -39,7 +39,7 @@ class Connector
             $database_configuration->get("password")
         );
         $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-        $this->pdo->query("SET NAMES utf8;");
+        $this->pdo->query("SET NAMES utf8mb4;");
     }
 
     /**
