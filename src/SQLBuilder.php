@@ -215,24 +215,26 @@ class SQLBuilder
                     $value = $value->format("Y-m-d H:i:s");
                 }
 
-                if ($value) {
-                    $value = $this->pdo->quote($value);
-                } else {
-                    $value = "null";
-                }
                 $columns .= $column.", ";
-                $values .= $value.", ";
-                $update .= "".$column." = ".$value.", ";
+                if ($value) {
+                    if (is_array($value)) {
+                        $value = json_encode($value);
+                    }
+                    $value = $this->pdo->quote($value);
+
+                    $values .= $value.", ";
+                    $update .= "".$column." = ".$value.", ";
+                } else {
+                    $values .= "null, ";
+                    $update .= "".$column." = null, ";
+                }
             } elseif (!isset($property["ORM\\Translatable"]) && isset($property["ORM\\Id"])) {
                 $column = "`id`";
                 $value = $entity->{"get" . ucfirst($property_name)}();
-
-                if ($value) {
-                    $value = $this->pdo->quote($value);
-                } else {
+                $value = $this->pdo->quote($value);
+                if ($value == "''") {
                     $value = "null";
                 }
-
                 $columns .= $column.", ";
                 $values .= $value.", ";
                 $update .= "".$column." = ".$value.", ";
