@@ -96,7 +96,7 @@ class SQLBuilder
 
         $exists = false;
         foreach ($tables as $table) {
-            if (current($table) == $entity["ORM\\Table"]) {
+            if (current($table) == strtolower($entity["ORM\\Table"])) {
                 $exists = true;
             }
         }
@@ -106,7 +106,7 @@ class SQLBuilder
         }
 
 
-        $query = $this->pdo->query("SHOW COLUMNS FROM `".$entity["ORM\\Table"]."`");
+        $query = $this->pdo->query("SHOW COLUMNS FROM `".strtolower($entity["ORM\\Table"])."`");
         $columns = $query->fetchAll(\PDO::FETCH_ASSOC);
         $column_names = [];
         foreach ($columns as $column) {

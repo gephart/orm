@@ -56,8 +56,12 @@ class Executor
                     if ($result[$property["ORM\\Column"]] !== null) {
                         $result_value = $result[$property["ORM\\Column"]];
 
-                        if (isset($property["var"]) && $property["var"] == "\\DateTime") {
-                            $result_value = new \DateTime($result_value);
+                        if (isset($property["var"]) && strpos($property["var"], "\\DateTime") !== false) {
+                            if (!$result_value) {
+                                $result_value = null;
+                            } else {
+                                $result_value = new \DateTime($result_value);
+                            }
                         }
 
                         $property_name = str_replace("_", "", $property_name);
